@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iris Vold — Portfolio (Improved Preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Shrikhand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-700: #3F7570;
+    --teal-800: #335E5A;
+    --ink-900: #1A1A1A;
+    --ink-700: #333333;
+    --navy-900: #383D51;
+    --cream-100: #F2EEE1;
+    --white: #FFFFFF;
+    --gray-200: #E5E5E5;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink-700);
+    background: var(--white);
+    overflow-x: hidden;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+
+  /* Nav */
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px; border-bottom: 1px solid var(--gray-200);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    position: sticky; top: 0; background: var(--white); z-index: 10;
+  }
+  .logo { display: flex; align-items: center; gap: 4px; font-family: 'Shrikhand', cursive; font-weight: 400; font-size: 20px; color: var(--ink-900); }
+  .logo svg { width: 14px; height: 14px; }
+  .nav-links { display: flex; gap: 40px; align-items: center; }
+  @media (max-width: 800px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+  /* Hero */
+  .hero {
+    background: var(--teal-700); color: white; padding: 100px 48px 220px;
+    position: relative; overflow: hidden;
+  }
+  .hero-inner { max-width: 700px; position: relative; z-index: 2; will-change: transform; }
+  .hero h1 { font-family: 'Shrikhand', cursive; font-size: 44px; font-weight: 400; line-height: 1.25; margin: 0 0 20px; letter-spacing: 0; }
+  .hero p { font-size: 18px; line-height: 1.6; margin: 0 0 16px; opacity: 0.95; }
+
+  .mountain-parallax {
+    position: absolute; left: 0; right: 0; bottom: -30px; height: 420px;
+    z-index: 3; pointer-events: none;
+  }
+  .mountain-parallax svg { position: absolute; bottom: 0; right: 0; width: 66%; height: auto; opacity: 0.97; }
+  @media (max-width: 800px) {
+    .mountain-parallax svg { width: 96%; }
+    .mountain-parallax { height: 260px; }
+  }
+
+  /* Section header */
+  .section-header { text-align: center; margin-bottom: 24px; }
+  .section-header h2 {
+    display: inline-block; font-family: 'Shrikhand', cursive; font-size: 32px; font-weight: 400;
+    color: var(--ink-900); margin: 0 0 8px;
+  }
+  section.block { padding: 96px 0; scroll-margin-top: 84px; }
+  section.block.alt { background: var(--cream-100); }
+
+  /* Project cards */
+  .project-card {
+    display: flex; align-items: center; gap: clamp(24px, 5vw, 56px); margin-top: 44px;
+    padding: 20px; margin-left: -20px; margin-right: -20px; margin-bottom: -20px;
+    border-radius: var(--radius-lg);
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+  }
+  .project-card:hover { background-color: #ECF1F1; }
+  .project-card:first-of-type { margin-top: 20px; }
+  .project-card.reverse { flex-direction: row-reverse; }
+  .project-text { flex: 1.1 1 0; min-width: 0; }
+  .project-text h3 { font-size: clamp(19px, 2.2vw, 24px); font-weight: 600; color: var(--ink-900); margin: 0 0 12px; line-height: 1.3; }
+  .project-text p { font-size: 16px; line-height: 1.6; margin: 0 0 16px; }
+  .project-text .features { font-size: 14px; color: #666; margin-top: 12px; }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--teal-700); font-size: 16px; text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .project-link .link-text {
+    position: relative;
+    text-decoration: none;
+  }
+  .project-link .link-text::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 100%; height: 1px;
+    background: currentColor;
+  }
+  .project-link:hover .link-text::after {
+    animation: link-underline-pulse 1.1s ease-in-out infinite;
+  }
+  @keyframes link-underline-pulse {
+    0%, 100% { width: 100%; }
+    50% { width: 5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .project-link:hover .link-text::after { animation: none; }
+  }
+  .project-link svg { width: 7px; height: 10px; fill: currentColor; flex-shrink: 0; }
+  .project-link .icon-external { width: 11px; height: 11px; }
+  .project-link:hover { color: var(--teal-800); }
+  .project-image {
+    flex: 1 1 0; min-width: 0; aspect-ratio: 4/3; max-height: min(46vh, 420px); width: auto;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, #ececec, #f6f6f6);
+    border: 2px solid var(--ink-900);
+    display: flex; align-items: center; justify-content: center;
+    color: #999; font-size: 14px; font-weight: 500;
+  }
+  @media (max-width: 1024px) {
+    .project-card { gap: 28px; margin-top: 28px; }
+  }
+  @media (max-width: 800px) {
+    .project-card, .project-card.reverse { flex-direction: column; }
+    .project-image { max-height: 320px; width: 100%; }
+  }
+
+  /* Publications */
+  .pub-intro { text-align: center; max-width: 640px; margin: 0 auto 32px; }
+  .pub-intro h3 { font-size: 24px; font-weight: 600; color: var(--ink-900); margin: 0 0 8px; }
+  .pub-intro p { font-size: 16px; margin: 0; }
+  .pub-links { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .pub-sep { color: #999; font-size: 16px; }
+  @media (max-width: 800px) { .pub-sep { display: none; } }
+
+  /* About */
+  .about-row { display: flex; gap: 48px; align-items: flex-start; margin-top: 40px; }
+  .about-photo {
+    flex: 0 0 340px; aspect-ratio: 4/5; border-radius: var(--radius-lg);
+    background: var(--cream-100); border: 1px solid var(--gray-200);
+    display: flex; align-items: center; justify-content: center; color: #b8ac8f; font-size: 14px;
+  }
+  .about-text h3 { font-size: 24px; font-weight: 600; color: var(--ink-900); margin: 0 0 16px; }
+  .about-text p { font-size: 16px; line-height: 1.7; margin: 0 0 16px; }
+  .about-text a { color: var(--teal-700); }
+  @media (max-width: 800px) { .about-row { flex-direction: column; } .about-photo { flex-basis: auto; width: 100%; } }
+
+  /* Footer */
+  footer {
+    background: var(--teal-700); color: white; padding: 20px 48px 0;
+    position: relative; overflow: hidden;
+  }
+  .footer-mountains {
+    position: absolute; bottom: 0; left: 0; height: 56px; width: auto;
+    opacity: 0.92; pointer-events: none;
+  }
+  .footer-mountains svg { display: block; height: 100%; width: auto; }
+  .footer-contact {
+    position: relative; z-index: 2; display: flex; justify-content: flex-end;
+    align-items: center; gap: 12px; font-weight: 500; font-size: 14px;
+    padding-bottom: 20px;
+  }
+  .footer-contact .icon {
+    width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: white; border: none; cursor: pointer; padding: 0;
+    position: relative; text-decoration: none;
+    transition: background 0.15s ease;
+  }
+  .footer-contact .icon:hover { background: rgba(255,255,255,0.28); }
+  .footer-contact .icon svg { display: block; }
+  .copy-tooltip {
+    position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--ink-900); color: white; font-size: 12px; font-weight: 500;
+    padding: 4px 8px; border-radius: 6px; white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  .footer-contact .icon.copied .copy-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  .email-copy-btn {
+    background: none; border: none; padding: 0; margin: 0; cursor: pointer;
+    font: inherit; color: var(--teal-700); text-decoration: underline;
+    position: relative; display: inline;
+  }
+  .email-copy-btn.copied .copy-tooltip {
+    opacity: 1; transform: translateX(-50%) translateY(0);
+  }
+
+
+  /* Password gate — client-side only. This hides the page until the correct
+     password is entered; it is a deterrent, not real security, since the
+     full page is still delivered in the HTML source. Uses the same
+     localStorage key/password as the project pages, so unlocking here also
+     unlocks them (and vice versa) in this browser. See note in the JS below
+     for how to change the password. */
+  .password-gate {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--teal-700);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .password-gate-card {
+    background: var(--white); color: var(--ink-700);
+    border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    max-width: 380px; width: 100%; padding: 40px 32px; text-align: center;
+  }
+  .password-gate-logo {
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+    font-family: 'Shrikhand', cursive; font-weight: 400; font-size: 20px;
+    color: var(--ink-900); margin-bottom: 24px;
+  }
+  .password-gate-logo svg { width: 14px; height: 14px; }
+  .password-gate-card h3 {
+    font-size: clamp(19px, 2.2vw, 24px); font-weight: 600; color: var(--ink-900);
+    margin: 0 0 8px; line-height: 1.3;
+  }
+  .password-gate-card p { font-size: 16px; line-height: 1.6; margin: 0 0 20px; }
+  .password-gate-form { display: flex; flex-direction: column; gap: 12px; }
+  .password-gate-input {
+    font: inherit; font-size: 16px; padding: 10px 14px;
+    border-radius: var(--radius-sm); border: 1px solid var(--gray-200); outline: none;
+  }
+  .password-gate-input:focus { border-color: var(--teal-700); }
+  .password-gate-submit {
+    font: inherit; font-weight: 600; font-size: 16px; padding: 10px 14px;
+    border-radius: var(--radius-sm); border: none; cursor: pointer;
+    background: var(--teal-700); color: white; transition: background 0.15s ease;
+  }
+  .password-gate-submit:hover { background: var(--teal-800); }
+  .password-gate-error {
+    color: #B3261E; font-size: 14px; margin: 12px 0 0;
+  }
+</style>
+</head>
+<body>
+
+<!--
+  Password gate: client-side only (see comment in the last <script> block for
+  how this works and how to change the password). This is a deterrent for
+  casual visitors, not real security — GitHub Pages has no server to enforce
+  a real login, so the page content below is still present in this file's
+  source regardless of whether the gate is unlocked.
+-->
+<div class="password-gate" id="passwordGate">
+  <div class="password-gate-card">
+    <div class="password-gate-logo">Iris Vold
+      <svg viewBox="0 0 14 14"><polygon points="7,0 14,14 0,14" fill="#3F7570"/></svg>
+    </div>
+    <h3>This portfolio is password protected</h3>
+    <p>Enter the password to continue.</p>
+    <form class="password-gate-form" id="passwordGateForm">
+      <input type="password" class="password-gate-input" id="passwordGateInput" placeholder="Password" autocomplete="off" autofocus>
+      <button type="submit" class="password-gate-submit">Unlock</button>
+      <p class="password-gate-error" id="passwordGateError" hidden>Incorrect password — please try again.</p>
+    </form>
+  </div>
+</div>
+
+<div id="pageContent" hidden>
+
+<nav>
+  <div class="logo">Iris Vold
+    <svg viewBox="0 0 14 14"><polygon points="7,0 14,14 0,14" fill="#3F7570"/></svg>
+  </div>
+  <div class="nav-links">
+    <a href="#projects" class="project-link"><span class="link-text">Projects</span></a>
+    <a href="#publications" class="project-link"><span class="link-text">Publications</span></a>
+    <a href="#aboutme" class="project-link"><span class="link-text">About Me &amp; Contact</span></a>
+    <a href="#" class="project-link nav-cta"><span class="link-text">Resume</span><svg class="icon-external" viewBox="0 0 512 512" aria-hidden="true"><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H176c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"/></svg></a>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <h1>Hi there!<br>I'm Iris, nice to meet you.</h1>
+    <p>I am a User Researcher, Experience Designer and Aspiring Adventurer.</p>
+    <p>I love exploring different places, problems and solutions. I am passionate about investigating the root cause of people's pain points to inform my designs.</p>
+  </div>
+  <div class="mountain-parallax" id="mountainParallax">
+<svg width="2657" height="1014" viewBox="0 0 2657 1014" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<path d="M1850.65 764.526L1837.71 733.849L1833.47 719.677L1922.38 765.998L1863.6 701.884L1817.46 677.28L1791.69 624.087L1762.3 607.707L1752.98 586.663L1642.18 501.321L1608 437.88L1563.34 354.809L1531 317.628L1497.08 246.151L1416.27 187.558L1371.43 127.309L1332.28 65.524L1236.45 0L1234.73 27.0589L1268.47 47.3037L1271.42 87.7977L1275.35 104.487L1286.88 122.465L1268.96 121.056L1264.61 104.734L1211.05 46.756L1188.96 40.6826L1188.78 40.6197L1179.33 37.9803L1157.43 27.2429L1156.02 67.122L1166.57 61.6007L1140.13 137.557L1174.73 187.316L1188.11 171.793L1201.24 181.732L1188.78 202.897L1182.65 254.986L1200.44 232.038L1205.16 198.848L1263.88 239.584L1265.41 290.569L1251.36 294.865L1268.91 300.938L1271.42 327.077L1284 314.62L1272.96 351.065L1280.81 348.058L1292.04 374.38L1287.99 403.953L1358.11 441.44L1349.46 412.908L1397.75 446.346L1371.8 396.403L1423.64 434.688L1446.46 432.727L1486.65 475.55L1523.58 538.808L1562.24 568.38L1596.84 576.909L1703.78 694.033L1704.89 675.381L1727.89 693.175L1762.62 748.209L1836.18 818.459L1791.27 733.853L1820.96 741.094L1850.65 764.526ZM1435.72 399.41L1341.48 309.346L1321.17 261.979L1281.78 225.413L1258.22 179.213L1297.79 207.314L1284.18 172.525L1333.07 209.154L1371.48 259.955L1435.84 315.356L1435.72 399.41Z" fill="white"/>
+<path d="M2335.53 783.423L2311.54 783.113L2245.52 703.171L2225.1 704.827L2163.01 665.747L2129.81 667.219L2044.84 587.767L2059.01 553.714L2015.76 503.403L1974.04 497.145L1971.03 482.606L1950.23 476.102L1914.89 404.625L1890.04 337.871L1882.38 296.888L1837.59 274.74L1829.06 265.233L1860.41 244.184L1967.96 330.326L2063.8 492.239L2097.17 495L2166.75 602.858L2218.1 644.762L2250.68 674.518L2335.53 783.423Z" fill="white"/>
+<path d="M1286.88 122.461L1268.96 121.051L1264.61 104.73L1211.04 46.7515L1188.96 40.6781L1236.45 0L1234.73 27.0589L1268.47 47.3037L1271.42 87.7977L1275.34 104.487L1286.88 122.461Z" fill="#373D52"/>
+<path d="M1184.6 333.885L1177.36 368.49L1159.75 336.215L1141.59 317.258L1133.37 330.819L1137.17 365.85L1105.03 337.813L1083.68 384.749L1081.71 366.524L1099.14 327.933L1099.38 305.049L1071.9 265.538L1076.56 230.691L1103.18 179.643L1140.3 216.825L1141.78 239.031L1160.67 261.857L1165.09 301.305L1184.6 333.885Z" fill="#EDF0F7"/>
+<path d="M1403.94 592.12L1348.11 557.641L1301.05 532.853L1278.23 517.147L1260.43 520.827L1230.93 494.877L1210.99 487.453L1209.15 475.306L1200.13 462.97L1225.96 412.664L1225.71 370.45L1250.31 344.743L1237.43 377.996L1246.82 393.582L1265.96 441.312L1278.72 446.407L1320.5 492.669L1323.38 509.475L1357.87 545.368L1403.94 592.12Z" fill="#EDF0F7"/>
+<path d="M1435.85 315.355L1435.72 399.409L1341.48 309.345L1321.17 261.978L1281.79 225.412L1258.23 179.213L1297.8 207.313L1284.18 172.524L1333.08 209.153L1371.48 259.954L1435.85 315.355Z" fill="#373D52"/>
+<path d="M1641.44 966.378L1415.41 791.644L1350.01 793.116L1235.16 731.884L1003.67 562.303C981.277 545.309 958.945 528.314 936.55 511.319C935.567 513.527 935.261 604.517 935.261 604.517L1050.79 745.691L1065.46 829.808L1065.64 830.913L1043.61 907.053L1144.29 977.856L1140.68 898.708L1115.15 875.335L1072.39 795.576L1134.3 850.547L1074.11 692.992L1067.85 647.776L1186.82 767.413L1243.88 826.558L1353.76 906.195L1321.42 821.652L1378.42 817.482L1409.04 825.517L1547.33 946.2L1511.13 882.885L1641.44 966.378Z" fill="white"/>
+<path d="M2073.92 862.507L2027.54 821.461L2014.1 813.605L1998.58 785.999L1973.79 781.335L1982.14 806.612L1965.69 799.923L1943.42 811.522L1960.78 790.169L1957.35 771.15L2003.92 753.297L2073.92 862.507Z" fill="white"/>
+<path d="M2235.59 960.855L2180.49 930.977L2148.83 910.606L2179.32 921.712L2136.44 877.663L2195.77 912.079L2235.59 960.855Z" fill="white"/>
+<path d="M2035.45 548.378L2016.92 588.32V567.582L2035.45 548.378Z" fill="white"/>
+<path d="M1887.4 470.58L1844.76 519.603L1857.16 485.12L1870.17 467.021L1887.4 470.58Z" fill="white"/>
+<path d="M748.197 802.378L697.948 757.225L632.483 646.233L731.018 730.718L662.854 585.189L718.871 637.646L692.732 573.284L654.694 515.243L681.075 532.853L697.701 523.22L709.175 528.005L727.579 517.268L606.959 442.663L616.839 688.751L667.024 878.029L770.098 962.451L748.197 802.378Z" fill="white"/>
+<path d="M964.282 287.255L959.191 298.24L903.79 389.04L822.923 454.017L786.356 503.345L844.092 553.593L807.279 595.56L784.269 574.022L767.705 493.896L826.051 408.796L964.282 287.255Z" fill="white"/>
+<path d="M616.834 688.748L667.02 878.021L770.093 962.443L748.192 802.37L697.943 757.212L632.479 646.225L731.013 730.71L662.85 585.181L718.866 637.638L692.728 573.276L654.688 515.235L681.07 532.845L697.697 523.212L709.17 527.997L727.574 517.26L767.7 493.882L784.265 574.008L807.274 595.546L844.088 553.579L936.55 511.308C935.568 513.514 935.261 604.308 935.261 604.505L1050.79 745.68L1065.46 829.797L1065.64 830.901L1043.61 907.041L1144.29 977.845L1140.68 898.696L1115.15 875.323L1072.39 795.564L1134.3 850.535L1074.11 692.98L1067.85 647.765L1186.82 767.401L1243.88 826.547L1353.76 906.184L1321.42 821.641L1378.42 817.471L1409.04 825.506L1547.33 946.188L1511.13 882.873L1641.45 966.375L1703.06 1014H0L62.3828 915.449L181.715 774.705L240.86 775.562L277.795 752.736L422.403 591.501L456.577 591.563L606.954 442.659L616.834 688.748ZM2000.22 1014H1916.05L1925.58 1005.89L1953.56 945.206L2000.22 1014ZM2188.17 975.703L2213.75 1014H2117.74L2134.61 984.537L2151.17 986.257L2166.63 968.278L2188.17 975.703Z" fill="#292F44"/>
+<path d="M1156.01 67.1211L1166.57 61.5996L1140.12 137.556L1174.73 187.314L1188.11 171.792L1201.24 181.73L1188.78 202.896L1182.64 254.984L1200.44 232.037L1205.16 198.847L1263.87 239.583L1265.41 290.567L1251.36 294.863L1268.91 300.937L1271.42 327.075L1284 314.619L1272.95 351.064L1280.81 348.057L1292.03 374.379L1287.98 403.952L1358.11 441.438L1349.46 412.907L1397.74 446.345L1371.79 396.401L1423.64 434.688L1446.46 432.726L1486.65 475.549L1523.58 538.807L1562.23 568.379L1596.84 576.908L1703.78 694.031L1704.88 675.38L1727.89 693.174L1762.61 748.207L1836.18 818.458L1791.27 733.852L1820.96 741.093L1850.65 764.529L1837.71 733.852L1833.47 719.681L1922.38 766.001L1863.6 701.887L1817.46 677.283L1791.69 624.09L1762.3 607.71L1752.98 586.667L1642.18 501.324L1608 437.883L1666.6 357.142L1722.98 328.427L1804.83 238.115L1829.06 265.232L1837.59 274.74L1882.38 296.888L1890.05 337.871L1914.89 404.625L1950.23 476.102L1971.03 482.605L1974.04 497.146L2015.76 503.402L2059.01 553.714L2044.84 587.767L2129.82 667.22L2163.01 665.747L2225.1 704.827L2245.53 703.171L2311.54 783.113L2335.53 783.418L2343.2 783.48L2656.12 1013.51L2654.81 1014H2213.75L2188.18 975.712L2166.64 968.288L2151.18 986.266L2134.62 984.546L2117.76 1014H2000.22L1953.57 945.215L1925.59 1005.9L1916.07 1014H1703.06L1641.45 966.384L1415.43 791.65L1350.02 793.123L1235.17 731.891L1003.68 562.31C981.29 545.315 958.958 528.32 936.563 511.325L844.102 553.597L786.37 503.349L822.937 454.021L903.799 389.049L959.2 298.243L964.291 287.259V287.196L999.322 211.792L1053.19 174.001L1120.8 84.1787L1143.07 40.25L1157.42 27.2412L1156.01 67.1211ZM2179.32 921.711L2148.83 910.605L2180.49 930.977L2235.58 960.854L2195.77 912.078L2136.44 877.657L2179.32 921.711ZM1957.35 771.146L1960.79 790.165L1943.42 811.514L1965.69 799.919L1982.14 806.607L1973.79 781.331L1998.58 785.995L2014.1 813.605L2027.54 821.461L2073.92 862.503L2003.92 753.293L1957.35 771.146ZM1225.71 370.451L1225.96 412.665L1200.13 462.976L1209.14 475.307L1210.99 487.454L1230.92 494.878L1260.43 520.828L1278.23 517.147L1301.05 532.854L1348.11 557.642L1403.94 592.13L1357.86 545.378L1323.38 509.485L1320.5 492.674L1278.72 446.412L1265.96 441.317L1246.82 393.583L1237.43 377.997L1250.31 344.743L1225.71 370.451ZM2016.92 567.58V588.318L2035.45 548.377L2016.92 567.58ZM1857.16 485.124L1844.76 519.603L1887.41 470.585L1870.17 467.024L1857.16 485.124ZM1076.56 230.699L1071.9 265.547L1099.38 305.058L1099.14 327.941L1081.71 366.532L1083.67 384.753L1105.03 337.817L1137.17 365.854L1133.37 330.823L1141.59 317.263L1159.75 336.22L1177.36 368.49L1184.6 333.895L1165.1 301.313L1160.68 261.866L1141.78 239.044L1140.31 216.833L1103.19 179.652L1076.56 230.699Z" fill="#373D52"/>
+</svg>
+  </div>
+</section>
+
+<section class="block" id="projects">
+  <div class="wrap">
+    <div class="section-header"><h2>—Projects—</h2></div>
+
+    <div class="project-card">
+      <div class="project-text">
+        <h3>Less Is More: How Intentional Scoping Accelerated MVP to Launch</h3>
+        <p>Advocated for then drove scoping and UX refinements of an MVP product to support complex asylum scheduling workflows. Served as de facto co-PM alongside another designer, collaborating with cross-functional stakeholders to align priorities and ensure successful delivery.</p>
+        <a href="https://irisvold.framer.website/less-is-more" target="_blank" rel="noopener" class="project-link"><span class="link-text">Project Details</span><svg viewBox="0 0 7 10"><polygon points="0,0 7,5 0,10"/></svg></a>
+        <div class="features">Features: Scoping + prioritization, new product</div>
+      </div>
+      <div class="project-image">Project screenshot</div>
+    </div>
+
+    <div class="project-card reverse">
+      <div class="project-text">
+        <h3>Putting the Puzzle Pieces Together: Unifying a Fragmented Workflow for Consolidation of Duplicate Filings</h3>
+        <p>Led the end-to-end design of a streamlined, more unified workflow for consolidating duplicate asylum filings—transforming a disjointed process across multiple systems under tight timelines. Collaborated closely with cross-functional stakeholders to align goals and drive consensus across teams.</p>
+        <a href="project-puzzle-pieces.html" class="project-link"><span class="link-text">Project Details</span><svg viewBox="0 0 7 10"><polygon points="0,0 7,5 0,10"/></svg></a>
+        <div class="features">Features: Site visit, tight timeline, stakeholder management, new product</div>
+      </div>
+      <div class="project-image">Project screenshot</div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-text">
+        <h3>From Policy to Product: Designing for Expanded Scope and Scaling Digital Referrals</h3>
+        <p>Adapted the asylum referrals dashboard to support a broader range of referrals—expanding from single adult referrals to also include family referrals, with their own distinct requirements. This work required navigating shifting government priorities while ensuring the design remained flexible and scalable.</p>
+        <a href="https://irisvold.framer.website/from-policy-to-product" target="_blank" rel="noopener" class="project-link"><span class="link-text">Project Details</span><svg viewBox="0 0 7 10"><polygon points="0,0 7,5 0,10"/></svg></a>
+        <div class="features">Features: Site visit, changing priorities, real-world 'messiness', existing product enhancement</div>
+      </div>
+      <div class="project-image">Project screenshot</div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="publications">
+  <div class="wrap">
+    <div class="section-header"><h2>—Publications—</h2></div>
+    <div class="pub-intro">
+      <h3>If you want to see more of my work…</h3>
+      <p>Take a look at a few of my written publications on a variety of design- and tech-adjacent topics.</p>
+    </div>
+    <div class="pub-links">
+      <a href="https://alltechishuman.org/all-tech-is-human-blog/guest-blog-iris-vold-on-all-tech-is-human-and-newpublics-better-digital-public-spaces-directory" target="_blank" rel="noopener" class="project-link"><span class="link-text">Healthy Digital Public Spaces</span><svg class="icon-external" viewBox="0 0 512 512" aria-hidden="true"><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H176c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"/></svg></a>
+      <span class="pub-sep" aria-hidden="true">|</span>
+      <a href="https://aspenpolicyacademy.org/project/ai-powered-pricing-pilot-for-public-transit/" target="_blank" rel="noopener" class="project-link"><span class="link-text">AI for Public Transit</span><svg class="icon-external" viewBox="0 0 512 512" aria-hidden="true"><path d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H176c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="aboutme">
+  <div class="wrap">
+    <div class="section-header"><h2>—About Me—</h2></div>
+    <div class="about-row">
+      <div class="about-photo">Photo</div>
+      <div class="about-text">
+        <h3>Hello again! A little about me…</h3>
+        <p>Every project is an adventure — and as the designer leading the journey, my mission is to deeply understand the people, processes, and systems involved, then craft solutions that deliver measurable impact. As a full-stack designer, I use mixed-methods user research to design both user-facing experiences and behind-the-scenes workflows, moving from early concepts through lo- to hi-fidelity prototypes.</p>
+        <p>My work spans complex, high-stakes domains — from streamlining asylum case processing for the U.S. government, to transforming healthcare service delivery, and more.</p>
+        <p>I'm a UC Berkeley graduate with a BA in <a href="https://cogsci.berkeley.edu/" target="_blank" rel="noopener">Cognitive Science</a>, a minor in <a href="https://cdss.berkeley.edu/" target="_blank" rel="noopener">Data Science</a>, and a <a href="https://scet.berkeley.edu/" target="_blank" rel="noopener">Certificate in Entrepreneurship and Technology</a> with additional graduate-level UX coursework through the <a href="https://www.ischool.berkeley.edu/" target="_blank" rel="noopener">School of Information</a>. I currently live and adventure in New York City.</p>
+        <p>If you'd like to learn more about my work, check out <a href="https://www.linkedin.com/in/irisvold/" target="_blank" rel="noopener">my LinkedIn</a> or feel free to <button type="button" class="email-copy-btn" data-email="irissierravold@gmail.com">email me<span class="copy-tooltip">Copied!</span></button>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-mountains">
+<svg width="2486" height="650" viewBox="0 0 2486 650" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<path d="M719.877 246.089L770.063 435.362L873.138 519.784L851.235 359.711L800.987 314.553L735.521 203.566L834.057 288.051L765.894 142.521L821.909 194.978L795.771 130.617L757.732 72.5762L784.113 90.1855L800.74 80.5527L812.213 85.3379L830.617 74.6006L870.747 51.2227L887.308 131.349L910.317 152.886L947.127 110.92L1039.6 68.6484C1038.61 70.8554 1038.31 161.658 1038.31 161.846L1153.84 303.021L1168.5 387.138L1168.69 388.242L1146.66 464.382L1247.34 535.185L1243.72 456.037L1218.2 432.664L1175.44 352.906L1237.34 407.876L1177.16 250.322L1170.9 205.105L1289.86 324.742L1346.92 383.888L1456.8 463.525L1424.47 378.981L1481.47 374.811L1512.08 382.846L1650.37 503.53L1614.17 440.214L1744.49 523.716L1819.89 581.999L1841.06 573.471L1857.5 588.504L1905.05 605.683L1949.11 630.959L2028.62 563.227L2056.6 502.547L2125.56 604.21L2145.99 594.703L2166.43 621.515L2213.67 583.781L2237.66 541.878L2254.22 543.597L2269.68 525.619L2291.21 533.044L2334.53 597.896L2380.85 626.794L2397.42 650H0L91.2471 589.976L165.426 472.79L284.758 332.046L343.903 332.903L380.838 310.077L525.446 148.842L559.62 148.905L709.997 0L719.877 246.089ZM2434.16 637.284L2459.81 639.062L2468.02 650H2407.48L2420.11 624.46L2434.16 637.284ZM2485.66 650H2484.53L2484.72 648.574L2485.66 650Z" fill="#292F44"/>
+</svg>
+  </div>
+  <div class="footer-contact">
+    <span>Contact:</span>
+    <a class="icon" href="https://www.linkedin.com/in/irisvold/" target="_blank" rel="noopener" aria-label="Iris Vold on LinkedIn">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+    </a>
+    <button type="button" class="icon email-copy-btn" id="copyEmailBtn" aria-label="Copy email address" data-email="irissierravold@gmail.com">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+      <span class="copy-tooltip">Copied!</span>
+    </button>
+  </div>
+</footer>
+
+</div><!-- /#pageContent -->
+
+<script>
+(function () {
+  // Client-side password gate. To change the password, edit the string
+  // below and re-save this file — no build step needed. Use the exact same
+  // string and STORAGE_KEY on every page (homepage and all project pages)
+  // so one password unlocks the whole site.
+  var CORRECT_PASSWORD = 'irisdesigns';
+  var STORAGE_KEY = 'irisPortfolioProjectUnlocked';
+
+  var gate = document.getElementById('passwordGate');
+  var content = document.getElementById('pageContent');
+  var form = document.getElementById('passwordGateForm');
+  var input = document.getElementById('passwordGateInput');
+  var error = document.getElementById('passwordGateError');
+  if (!gate || !content || !form || !input) return;
+
+  function unlock(remember) {
+    gate.style.display = 'none';
+    content.hidden = false;
+    if (remember) {
+      try { localStorage.setItem(STORAGE_KEY, 'true'); } catch (e) {}
+    }
+    // Let scroll/resize-driven effects (like the hero parallax below)
+    // recompute now that the real layout is visible.
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  try {
+    if (localStorage.getItem(STORAGE_KEY) === 'true') {
+      unlock(false);
+    }
+  } catch (e) {}
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (input.value === CORRECT_PASSWORD) {
+      if (error) error.hidden = true;
+      unlock(true);
+    } else {
+      if (error) error.hidden = false;
+      input.value = '';
+      input.focus();
+    }
+  });
+})();
+</script>
+<script>
+(function () {
+  // Matches irisvold.framer.website: the mountain stays flush with the bottom
+  // of the hero (no motion of its own — plain in-flow position). The hero text
+  // is the element with the scroll effect: it moves at roughly half scroll
+  // speed, so it lags behind and visually sinks toward the mountain as you
+  // scroll through the hero, closing the gap until the mountain covers it.
+  var hero = document.getElementById('hero');
+  var text = document.querySelector('.hero-inner');
+  if (!hero || !text) return;
+  var LAG_FACTOR = 0.5;
+  var ticking = false;
+  function update() {
+    var rect = hero.getBoundingClientRect();
+    var heroHeight = hero.offsetHeight || 1;
+    var scrolled = Math.min(Math.max(-rect.top, 0), heroHeight);
+    var lag = scrolled * LAG_FACTOR;
+    text.style.transform = 'translateY(' + lag + 'px)';
+    ticking = false;
+  }
+  function onScroll() {
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+
+(function () {
+  var buttons = document.querySelectorAll('.email-copy-btn');
+  if (!buttons.length) return;
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  function showCopied(btn) {
+    btn.classList.add('copied');
+    setTimeout(function () { btn.classList.remove('copied'); }, 1500);
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var email = btn.getAttribute('data-email');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(function () {
+          showCopied(btn);
+        }, function () {
+          fallbackCopy(email);
+          showCopied(btn);
+        });
+      } else {
+        fallbackCopy(email);
+        showCopied(btn);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
