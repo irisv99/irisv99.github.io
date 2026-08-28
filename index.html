@@ -196,78 +196,9 @@
   .email-copy-btn.copied .copy-tooltip {
     opacity: 1; transform: translateX(-50%) translateY(0);
   }
-
-
-  /* Password gate — client-side only. This hides the page until the correct
-     password is entered; it is a deterrent, not real security, since the
-     full page is still delivered in the HTML source. Uses the same
-     localStorage key/password as the project pages, so unlocking here also
-     unlocks them (and vice versa) in this browser. See note in the JS below
-     for how to change the password. */
-  .password-gate {
-    position: fixed; inset: 0; z-index: 9999;
-    background: var(--teal-700);
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-  }
-  .password-gate-card {
-    background: var(--white); color: var(--ink-700);
-    border-radius: var(--radius-lg); box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    max-width: 380px; width: 100%; padding: 40px 32px; text-align: center;
-  }
-  .password-gate-logo {
-    display: flex; align-items: center; justify-content: center; gap: 4px;
-    font-family: 'Shrikhand', cursive; font-weight: 400; font-size: 20px;
-    color: var(--ink-900); margin-bottom: 24px;
-  }
-  .password-gate-logo svg { width: 14px; height: 14px; }
-  .password-gate-card h3 {
-    font-size: clamp(19px, 2.2vw, 24px); font-weight: 600; color: var(--ink-900);
-    margin: 0 0 8px; line-height: 1.3;
-  }
-  .password-gate-card p { font-size: 16px; line-height: 1.6; margin: 0 0 20px; }
-  .password-gate-form { display: flex; flex-direction: column; gap: 12px; }
-  .password-gate-input {
-    font: inherit; font-size: 16px; padding: 10px 14px;
-    border-radius: var(--radius-sm); border: 1px solid var(--gray-200); outline: none;
-  }
-  .password-gate-input:focus { border-color: var(--teal-700); }
-  .password-gate-submit {
-    font: inherit; font-weight: 600; font-size: 16px; padding: 10px 14px;
-    border-radius: var(--radius-sm); border: none; cursor: pointer;
-    background: var(--teal-700); color: white; transition: background 0.15s ease;
-  }
-  .password-gate-submit:hover { background: var(--teal-800); }
-  .password-gate-error {
-    color: #B3261E; font-size: 14px; margin: 12px 0 0;
-  }
 </style>
 </head>
 <body>
-
-<!--
-  Password gate: client-side only (see comment in the last <script> block for
-  how this works and how to change the password). This is a deterrent for
-  casual visitors, not real security — GitHub Pages has no server to enforce
-  a real login, so the page content below is still present in this file's
-  source regardless of whether the gate is unlocked.
--->
-<div class="password-gate" id="passwordGate">
-  <div class="password-gate-card">
-    <div class="password-gate-logo">Iris Vold
-      <svg viewBox="0 0 14 14"><polygon points="7,0 14,14 0,14" fill="#3F7570"/></svg>
-    </div>
-    <h3>This portfolio is password protected</h3>
-    <p>Enter the password to continue.</p>
-    <form class="password-gate-form" id="passwordGateForm">
-      <input type="password" class="password-gate-input" id="passwordGateInput" placeholder="Password" autocomplete="off" autofocus>
-      <button type="submit" class="password-gate-submit">Unlock</button>
-      <p class="password-gate-error" id="passwordGateError" hidden>Incorrect password — please try again.</p>
-    </form>
-  </div>
-</div>
-
-<div id="pageContent" hidden>
 
 <nav>
   <div class="logo">Iris Vold
@@ -393,54 +324,6 @@
   </div>
 </footer>
 
-</div><!-- /#pageContent -->
-
-<script>
-(function () {
-  // Client-side password gate. To change the password, edit the string
-  // below and re-save this file — no build step needed. Use the exact same
-  // string and STORAGE_KEY on every page (homepage and all project pages)
-  // so one password unlocks the whole site.
-  var CORRECT_PASSWORD = 'irisdesigns';
-  var STORAGE_KEY = 'irisPortfolioProjectUnlocked';
-
-  var gate = document.getElementById('passwordGate');
-  var content = document.getElementById('pageContent');
-  var form = document.getElementById('passwordGateForm');
-  var input = document.getElementById('passwordGateInput');
-  var error = document.getElementById('passwordGateError');
-  if (!gate || !content || !form || !input) return;
-
-  function unlock(remember) {
-    gate.style.display = 'none';
-    content.hidden = false;
-    if (remember) {
-      try { localStorage.setItem(STORAGE_KEY, 'true'); } catch (e) {}
-    }
-    // Let scroll/resize-driven effects (like the hero parallax below)
-    // recompute now that the real layout is visible.
-    window.dispatchEvent(new Event('resize'));
-  }
-
-  try {
-    if (localStorage.getItem(STORAGE_KEY) === 'true') {
-      unlock(false);
-    }
-  } catch (e) {}
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (input.value === CORRECT_PASSWORD) {
-      if (error) error.hidden = true;
-      unlock(true);
-    } else {
-      if (error) error.hidden = false;
-      input.value = '';
-      input.focus();
-    }
-  });
-})();
-</script>
 <script>
 (function () {
   // Matches irisvold.framer.website: the mountain stays flush with the bottom
