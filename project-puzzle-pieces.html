@@ -119,7 +119,7 @@
   .carousel { position: relative; width: 100%; }
   .carousel-viewport {
     border-radius: var(--radius-lg); border: 2px solid var(--ink-900);
-    overflow: hidden; aspect-ratio: 4/3;
+    overflow: hidden; aspect-ratio: 1440 / 865;
     background: linear-gradient(135deg, #ececec, #f6f6f6);
   }
   .carousel-track { display: flex; height: 100%; transition: transform 0.35s ease; }
@@ -230,10 +230,9 @@
         <div class="carousel" id="projectCarousel">
           <div class="carousel-viewport">
             <div class="carousel-track">
-              <img class="carousel-slide" src="https://framerusercontent.com/images/wKHGTISPfT3sqNzA0Gz6Q2Tor0.png" alt="Consolidation dashboard screenshot 1 of 4: the Groups of Likely Duplicates table view">
-              <img class="carousel-slide" src="https://framerusercontent.com/images/mh9PCJRDoDfjSJXJSvsb7o92A.png" alt="Consolidation dashboard screenshot 2 of 4">
-              <img class="carousel-slide" src="https://framerusercontent.com/images/wvQ0Cqwl4xxpkw6zinu7gFzqln4.png" alt="Consolidation dashboard screenshot 3 of 4">
-              <img class="carousel-slide" src="https://framerusercontent.com/images/DtZEbKnAbdtuGGXbh8U7BBtN1aA.png" alt="Consolidation dashboard screenshot 4 of 4">
+              <img class="carousel-slide" src="images/puzzle-pieces-1.png" alt="Consolidation dashboard screenshot 1 of 3: the Group Filings view comparing duplicate applicant records side by side">
+              <img class="carousel-slide" src="images/puzzle-pieces-2.png" alt="Consolidation dashboard screenshot 2 of 3: the Groups of Likely Duplicates table view">
+              <img class="carousel-slide" src="images/puzzle-pieces-3.png" alt="Consolidation dashboard screenshot 3 of 3: the Group Tasks view for closing out a duplicate group">
             </div>
           </div>
           <button type="button" class="carousel-arrow prev" aria-label="Previous screenshot">
@@ -246,7 +245,6 @@
             <button type="button" class="carousel-dot active" data-index="0" aria-label="Show screenshot 1"></button>
             <button type="button" class="carousel-dot" data-index="1" aria-label="Show screenshot 2"></button>
             <button type="button" class="carousel-dot" data-index="2" aria-label="Show screenshot 3"></button>
-            <button type="button" class="carousel-dot" data-index="3" aria-label="Show screenshot 4"></button>
           </div>
         </div>
       </div>
