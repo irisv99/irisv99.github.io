@@ -150,7 +150,9 @@
     flex: 0 0 340px; aspect-ratio: 4/5; border-radius: var(--radius-lg);
     background: var(--cream-100); border: 1px solid var(--gray-200);
     display: flex; align-items: center; justify-content: center; color: #b8ac8f; font-size: 14px;
+    overflow: hidden;
   }
+  .about-photo img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
   .about-text h3 { font-size: 24px; font-weight: 600; color: var(--ink-900); margin: 0 0 16px; }
   .about-text p { font-size: 16px; line-height: 1.7; margin: 0 0 16px; }
   .about-text a { color: var(--teal-700); }
@@ -296,7 +298,7 @@
   <div class="wrap">
     <div class="section-header"><h2>—About Me—</h2></div>
     <div class="about-row">
-      <div class="about-photo">Photo</div>
+      <div class="about-photo"><img src="images/about-me.jpg" alt="Iris Vold on a rooftop terrace in Cappadocia, Turkey, with hot air balloons in the sky at sunrise"></div>
       <div class="about-text">
         <h3>Hello again! A little about me…</h3>
         <p>Every project is an adventure — and as the designer leading the journey, my mission is to deeply understand the people, processes, and systems involved, then craft solutions that deliver measurable impact. As a full-stack designer, I use mixed-methods user research to design both user-facing experiences and behind-the-scenes workflows, moving from early concepts through lo- to hi-fidelity prototypes.</p>
